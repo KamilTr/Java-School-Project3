@@ -79,8 +79,13 @@ public class Item implements Comparable<Item> {
 		list.add(itm2);
 		list.add(itm3);
 		list.remove("termometer");
-		list.printList();
 		list.size();
+		System.out.println(list.find("bermometer").getItemName());
+		itm1.setDeliverDate(calendar.getTime());
+		list.remove(itm1.getItemName());
+		list.printList();
+		
+		
 	}
 
 }

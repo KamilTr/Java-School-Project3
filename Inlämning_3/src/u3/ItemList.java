@@ -14,6 +14,7 @@ public class ItemList {
 
 	public ItemList() {
 		header = new Node(null);
+		size = 0;
 	}
 
 	/**
@@ -53,13 +54,51 @@ public class ItemList {
 	 * Returnerar true om det finns ett Item-objekt vars RFIDNR är lika med
 	 * metodens parametern id
 	 */
-	public boolean find(String id) {
+	public boolean searchRFID(String id) {
 		Node temp = header;
-		while(temp.next != null)
-			if(temp.next.itm.getItemNumber()==id)
+		while(temp.next != null){
+			if(temp.next.itm.getItemNumber().equals(id))
 				return true;
+			temp = temp.next;
+		}
 		return false;
 	}
+
+	public boolean search(String id) {
+		Node temp = header;
+		while(temp.next != null){
+			if(temp.next.itm.getItemName().equals(id))
+				return true;
+			temp = temp.next;
+		}
+		return false;
+	}
+	
+	public Item find(String id){
+		Node temp = header;
+		while(temp.next != null){
+			if(temp.next.itm.getItemName().equals(id)){
+				return temp.next.itm;
+			}
+			temp = temp.next;
+				
+		}
+		return null;
+	}
+	public int findIndex(Item itm){
+		Node temp = header;
+		int counter = 0;
+		while(temp.next != null && counter <size){
+			if(temp.next.itm.equals(itm) ){
+				return counter;
+			}
+			counter++;
+			temp = temp.next;
+			
+		}
+		return -1;
+	}
+	
 
 	/**
 	 * Ta bort noden som innehåller Item- objektet med viss id
@@ -90,6 +129,7 @@ public class ItemList {
 		while(temp.next!=null){
 			if(temp.next.itm.getItemName()==name)
 				count++;
+			temp = temp.next;
 		}
 		return count;
 	}
@@ -100,7 +140,7 @@ public class ItemList {
 	public void printList() {
 		Node temp = header;
 		while(temp.next != null){
-			System.out.println(temp.next.itm.getItemName() + " RFID:" + temp.next.itm.getItemNumber());
+			System.out.println(temp.next.itm.getItemName() + " RFID:" + temp.next.itm.getItemNumber() + " Date:" + temp.next.itm.getDeliverDate());
 			temp = temp.next;
 		}
 	}

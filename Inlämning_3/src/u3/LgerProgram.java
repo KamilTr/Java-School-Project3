@@ -10,15 +10,6 @@ public class LgerProgram {
 	static long nr = 1111111111;
 
 	public static void main(String[] args) {
-		try {
-			Scanner filescan = new Scanner(new File("Verktyg.txt"));
-			while (filescan.hasNext())
-				System.out.println(filescan.next());
-		}
-
-		catch (IOException ex) {
-			System.out.println("Filen finns inte");
-		}
 		printMenu();
 		int choice = scan.nextInt();
 		scan.nextLine();
@@ -33,11 +24,9 @@ public class LgerProgram {
 
 	public static String getRFID() {
 		return "" + nr++;
-
 	}
 
 	public static void dispatch(int choice) {
-		int loc;
 
 		switch (choice) {
 		case 0:
@@ -46,29 +35,82 @@ public class LgerProgram {
 			break;
 
 		case 1: {
-			// Här bygger du upp lagret. Fyller inlager med Item-objekt vars
-			// namn läser du från filen.
-			// RFIDNR som du behöver till varje Item- kan skapas av metoden ge
-			// Utlagret är i början tom
+			try {
+				Scanner filescan = new Scanner(new File("Verktyg.txt"));
+				while (filescan.hasNext())
+					inStore.add(new Item(filescan.next(), getRFID()));
+			}
+
+			catch (IOException ex) {
+				System.out.println("Filen finns inte");
+			}
+			System.out.println("\n\t Store was setup succesfully.");
 
 			break;
 		}
 		case 2: {
-
+			Calendar calendar = Calendar.getInstance();
+			Date newDate = calendar.getTime();
+			System.out.println("Enter the name of the item you wish to lend:");
+			Scanner in1 = new Scanner(System.in);
+			String input = in1.nextLine().replaceAll("\\s", "");
+			Item tempItm;
+			if(inStore.search(input)){
+				tempItm = inStore.find(input);
+				tempItm.setDeliverDate(newDate);
+				inStore.remove(tempItm.getItemName());
+				outStore.add(tempItm);
+				printLog(tempItm, false);
+				System.out.println("You have borowed " + tempItm.getItemName() + " RFID " + tempItm.getItemNumber());
+			}
+			else{System.out.println("The item you wish to lend is not instore or does not exist.");}
 			break;
 		}
 		case 3: {
+			Calendar calendar = Calendar.getInstance();
+			Date newDate = calendar.getTime();
+			System.out.println("Enter the name of the item you wish to lend:");
+			Scanner in1 = new Scanner(System.in);
+			String input = in1.nextLine().replaceAll("\\s", "");
+			Item tempItm;
+			if(outStore.search(input)){
+				tempItm = outStore.find(input);
+				tempItm.setDeliverDate(newDate);
+				outStore.remove(tempItm.getItemName());
+				inStore.add(tempItm);
+				printLog(tempItm, true);
+				System.out.println("You have returned " + tempItm.getItemName() + " RFID " + tempItm.getItemNumber());
+			}
+			else{System.out.println("The item you wish to lend is not instore or does not exist.");}
 			break;
 		}
 
 		case 4: {
+			Scanner in2 = new Scanner(System.in);
+			System.out.println("\tEnter the item to search for:");
+			String input = in2.nextLine().replaceAll("\\s", "");
+			if(inStore.search(input) == true)
+				System.out.println("\t" + input + " is in stock");
+			else{System.out.println(input + " was not found.");}
 			break;
 		}
+		
 		case 5: {
+			Scanner in2 = new Scanner(System.in);
+			System.out.println("\tEnter the item to search for:");
+			String input = in2.nextLine().replaceAll("\\s", "");
+			if(outStore.search(input) == true)
+				System.out.println("\t" + input + " is in stock");
+			else{System.out.println(input + " was not found.");}
 			break;
 		}
 
 		case 6: {
+			inStore.printList();
+			break;
+		}
+		case 7: {
+			outStore.printList();
 			break;
 		}
 
@@ -85,21 +127,47 @@ public class LgerProgram {
 		System.out.println("   ====");
 		System.out.println("0: Exit");
 		System.out.println("1: Setup Store");
-		System.out.println("2: ??");
-		System.out.println("3: ??");
-		System.out.println("4: ??");
-		System.out.println("5: ??");
-		System.out.println("6: ??");
+		System.out.println("2: Lend Item");
+		System.out.println("3: Return Item");
+		System.out.println("4: Search Item In Store");
+		System.out.println("5: Search Lent Items");
+		System.out.println("6: Print All Items In Store");
+		System.out.println("7: Print All Lent Items");
 
 		System.out.print("\nEnter your choice: ");
+	}
+	
+	public static void printLog(Item itm, Boolean instock){
+		File file = new File(itm.getItemName() + "Log" + ".txt");
+		FileWriter fw = null;
+		BufferedWriter bw = null;
+		String status;
+		try{
+			if(!file.exists()){
+				file.createNewFile();
+			}
+			if(instock)
+				status = "Returned ";
+			else
+				status = "Borrowed ";
+			fw = new FileWriter(file.getAbsoluteFile(), true);
+			bw = new BufferedWriter(fw);
+			String log = itm.getItemName() + " " + itm.getItemNumber() + " " + itm.getDeliverDate();
+			bw.write(status + log);
+			bw.newLine();
+		}catch(IOException e){
+			e.printStackTrace();
+		}finally{
+			try{
+				if(bw != null)
+					bw.close();
+				if(fw != null)
+					fw.close();
+			}catch(IOException ex){
+				ex.printStackTrace();
+			}
+		}
 	}
 
 }
 
-/*
- * Exempel hur man läser från fil. try{ Scanner filescan=new Scanner(new
- * File("Verktyg.txt")); while( filescan.hasNext()) System.out.println(
- * filescan.next()); }
- * 
- * catch(IOException ex){System.out.println("Filen finns inte");
- */

@@ -1,0 +1,4 @@
+Borrowed Borrmaskin 1111111111 Wed Apr 12 22:26:34 CEST 2017
+Returned Borrmaskin 1111111111 Wed Apr 12 22:26:51 CEST 2017
+Borrowed Borrmaskin 1111111111 Wed Apr 12 22:28:29 CEST 2017
+Returned Borrmaskin 1111111111 Wed Apr 12 22:29:16 CEST 2017
