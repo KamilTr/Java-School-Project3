@@ -2,6 +2,8 @@ package u3;
 
 import java.util.*;
 
+import u3.Item;
+
 
 /**
  * Klassen ItemList är en länkad lista som innehåller noder av Item-objekt.
@@ -160,5 +162,5 @@ public class ItemList {
 	public int size() {
 		return size;
 	}
-
+	
 }

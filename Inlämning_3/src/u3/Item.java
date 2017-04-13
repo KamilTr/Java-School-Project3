@@ -2,10 +2,9 @@ package u3;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.*;
 
-public class Item implements Comparable<Item> {
+public class Item implements Comparable<Item>{
 	public Date delivered; // utlånd datum, null när Item inte är utlånad
 	public final String RFIDNR;
 	public String name;
@@ -55,6 +54,7 @@ public class Item implements Comparable<Item> {
 		else
 			return RFIDNR + " " + name + " " + df.format(delivered);
 	}
+	
 
 	// See a simple program example to understand how Date class works;
 	public static void main(String[] arg) {
@@ -84,8 +84,6 @@ public class Item implements Comparable<Item> {
 		itm1.setDeliverDate(calendar.getTime());
 		list.remove(itm1.getItemName());
 		list.printList();
-		
-		
 	}
 
 }

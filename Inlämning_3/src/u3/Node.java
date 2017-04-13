@@ -1,5 +1,6 @@
 package u3;
 
+
 class Node {
 	public Item itm;
 	public Node next;
@@ -27,5 +28,4 @@ class Node {
 		}
 
 	}
-
 }
